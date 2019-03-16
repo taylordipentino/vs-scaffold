@@ -84,6 +84,10 @@ msg "Changing some PHP settings..."
 sed -i 's/memory_limit = 128M/memory_limit = 768M/' /etc/php/7.2/apache2/php.ini
 sed -i 's/error_reporting = E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED/error_reporting = E_ALL/' /etc/php/7.2/apache2/php.ini
 sed -i 's/display_errors = Off/display_errors = On/' /etc/php/7.2/apache2/php.ini
+# Enable the PDO extension if mysql is in use
+if [ $database_type = "mysql" ]; then
+  sed -i 's/;extension=pdo_mysql/extension=pdo_mysql/' /etc/php/7.2/apache2/php.ini
+fi
 
 # Make the document root a symlink to the Vagrant shared folder
 if ! [ -L /var/www/html ]; then
