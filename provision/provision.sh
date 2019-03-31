@@ -5,8 +5,8 @@
 project_name="scaffold"
 
 # The type of project to be set up
-# Possible values are wordpress, laravel
-project_type="laravel"
+# Possible values are wordpress, laravel, general
+project_type="general"
 
 # The type of database to be set up
 # Possible values are mysql, none
@@ -99,6 +99,7 @@ fi
 # Enable URL rewrites for Apache and restart it
 msg "Enabling URL rewrites and restarting Apache..."
 a2enmod rewrite
+sed -i '172s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
 systemctl restart apache2
 
 # If necessary, install Composer
@@ -142,6 +143,11 @@ if [ $project_type = "laravel" ]; then
   rm -r laravel
   php artisan key:generate
   cd ~/
+fi
+
+# If applicable, show info about the PHP configuration in the document root
+if [ $project_type = "general" ]; then 
+  echo "<?php phpinfo(); ?>" >> /var/www/html/index.php 
 fi
 
 msg "All done! :)"
