@@ -14,15 +14,16 @@ database_type="mysql"
 
 # Function to print messages along the way
 msg() {
-  echo ""
   echo " $1"
-  echo ""
 }
+
+# Make sure we don't get prompted
+export DEBIAN_FRONTEND=noninteractive
 
 # Update the repositories and upgrade packages
 msg "Updating the repositories and upgrading packages..."
 apt update
-apt upgrade -y
+apt upgrade -yq
 
 # Determine what packages need to be installed
 msg "Determining packages to be installed based on project type"
